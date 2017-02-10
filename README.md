@@ -1,2 +1,2 @@
 # mail-api-docker
-Mail API docker development container
+Mail API docker development configuration
