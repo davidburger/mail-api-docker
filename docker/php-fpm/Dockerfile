@@ -1,13 +1,16 @@
 FROM php:7.1-fpm
 
-RUN  apt-get update && apt-get install -y build-essential ca-certificates \
+RUN  apt-get update && apt-get upgrade -y && apt-get install -y build-essential ca-certificates \
  git curl libcurl3 libcurl3-dev \
  openssl tar \
- libpq-dev
+ libpq-dev \
+ sendmail \
+ && rm -rf /var/lib/apt/lists/*
 
-RUN docker-php-ext-install pdo_mysql pdo_pgsql zip
+RUN docker-php-ext-install pdo_mysql pdo_pgsql zip pcntl
 
-RUN apt-get upgrade -y sendmail && rm -rf /var/lib/apt/lists/*
+RUN pecl install redis-3.1.3 \
+    && docker-php-ext-enable redis
 
 #install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
